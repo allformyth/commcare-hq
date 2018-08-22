@@ -3,13 +3,12 @@ from __future__ import unicode_literals
 import os
 import re
 from base64 import urlsafe_b64encode
-from datetime import datetime, timedelta
+from datetime import datetime
 
 from botocore.handlers import calculate_md5
 from jsonfield import JSONField
 
 from corehq.blobs.exceptions import BadName
-from corehq.util.datadog.gauges import datadog_counter
 
 SAFENAME = re.compile("^[a-z0-9_./{}-]+$", re.IGNORECASE)
 
@@ -118,27 +117,6 @@ def check_safe_key(key):
             key.endswith("/..") or
             not SAFENAME.match(key)):
         raise BadName("unsafe key: %r" % key)
-
-
-def set_blob_expire_object(bucket, identifier, length, timeout):
-    from .models import BlobExpiration
-    try:
-        blob_expiration = BlobExpiration.objects.get(
-            bucket=bucket,
-            identifier=identifier,
-            deleted=False,
-        )
-    except BlobExpiration.DoesNotExist:
-        blob_expiration = BlobExpiration(
-            bucket=bucket,
-            identifier=identifier,
-        )
-
-    blob_expiration.expires_on = _utcnow() + timedelta(minutes=timeout)
-    blob_expiration.length = length
-    blob_expiration.save()
-    datadog_counter('commcare.temp_blobs.count')
-    datadog_counter('commcare.temp_blobs.bytes_added', value=length)
 
 
 def _utcnow():
