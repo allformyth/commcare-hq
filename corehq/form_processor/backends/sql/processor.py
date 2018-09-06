@@ -32,12 +32,14 @@ class FormProcessorSQL(object):
 
     @classmethod
     def store_attachments(cls, xform, attachments):
+        #xform.set_attachments(attachments)
         assert not hasattr(xform, "unsaved_attachments"), xform
         assert not hasattr(xform, "cached_attachments"), xform
         xform.unsaved_attachments = attachments
 
     @classmethod
     def copy_attachments(cls, from_form, to_form):
+        #to_form.copy_attachments(from_form)
         if not hasattr(to_form, 'unsaved_attachments'):
             to_form.unsaved_attachments = []
         existing_names = {a.name for a in to_form.unsaved_attachments}

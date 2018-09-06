@@ -220,6 +220,21 @@ def apply_deprecation(existing_xform, new_xform, interface=None):
     #  - Save the new instance to the previous document to preserve the ID
 
     interface = interface or FormProcessorInterface(existing_xform.domain)
+    # copy metadata (XFormAttachmentSQL) from old form to new form (unsaved)
+    # - the new metadata points to the same blobs keys used by the old
+    #   form, which is genrally not a good thing (who owns the content?)
+    # - what happens on save:
+    #   - new form is saved first with existing form_id
+    #     - existing (old) attachments are now owned by new form?
+    #     - new attachments (duplicates) also created?
+    #   - old form is saved second with new form_id
+    #     - attachments are lost? because new form now references them
+    # - what happens to new attachment submitted with new form
+    #   (same name as old/existing attachment)?
+    #   - theories:
+    #     - discarded?
+    #     - metadata overwritten by existing attachment?
+    #     - duplicate metadata created?
     interface.copy_attachments(existing_xform, new_xform)
     interface.copy_form_operations(existing_xform, new_xform)
     new_xform.form_id = existing_xform.form_id

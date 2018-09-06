@@ -26,7 +26,10 @@ class SubmissionTest(TestCase):
     def setUp(self):
         super(SubmissionTest, self).setUp()
         self.domain = create_domain("submit")
+#        try:
         self.couch_user = CommCareUser.create(self.domain.name, "test", "foobar")
+#        except Exception:
+#            self.couch_user = CommCareUser.get_by_username("test")
         self.client = Client()
         self.client.login(**{'username': 'test', 'password': 'foobar'})
         self.url = reverse("receiver_post", args=[self.domain])
