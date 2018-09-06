@@ -164,6 +164,23 @@ class SaveStateMixin(object):
 
 class AttachmentMixin(SaveStateMixin):
 
+    #def set_attachments(self, attachments):
+    #    """Set attachments to be stored on save"""
+    #    assert not hasattr(self, "unsaved_attachments"), self
+    #    assert not hasattr(self, "cached_attachments"), self
+    #    self.unsaved_attachments = attachments
+    #
+    #def copy_attachments(self, xform):
+    #    """Copy attachments from the given xform"""
+    #    if not hasattr(self, 'unsaved_attachments'):
+    #        self.unsaved_attachments = []
+    #    existing_names = {a.name for a in self.unsaved_attachments}
+    #    self.unsaved_attachments.extend(
+    #        Attachment(meta.name, meta, meta.content_type)
+    #        for meta in six.itervalues(xform.attachments)
+    #        if meta.name not in existing_names
+    #    )
+
     def get_attachments(self):
         for list_attr in ('unsaved_attachments', 'cached_attachments'):
             if hasattr(self, list_attr):

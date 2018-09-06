@@ -617,6 +617,7 @@ class FormAccessorSQL(AbstractFormAccessor):
                     # reassign old attachments to deprecated form
                     blob_db.metadb.reparent(form.form_id, form.deprecated_form_id)
 
+                # TODO move all references to unsaved_attachments and cached_attachments
                 form.cached_attachments = [
                     attachment.write(blob_db, form)
                     for attachment in getattr(form, 'unsaved_attachments', [])
