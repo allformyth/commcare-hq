@@ -69,7 +69,8 @@ def process_xform_xml(domain, instance, attachments=None, auth_context=None):
     or raises an exception if anything goes wrong.
 
     attachments is a dictionary of the request.FILES that are not the xform;
-    key is parameter name, value is django MemoryFile object stream
+    key is parameter name, value is
+    `django.core.files.uploadedfile.UploadedFile` object.
     """
     attachments = attachments or {}
 

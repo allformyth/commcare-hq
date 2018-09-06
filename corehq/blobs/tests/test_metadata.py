@@ -154,6 +154,21 @@ class TestMetaDB(TestCase):
         )
         self.assertEqual({x.key for x in items}, {ns.m2.key, ns.m3.key})
 
+    def test_reparent(self):
+        metadb = self.db.metadb
+        noch = self.db.put(BytesIO(b"content"), meta=new_meta(parent_id="no-change"))
+        metas = []
+        for name in "abc":
+            meta = new_meta(parent_id="old", name=name)
+            metas.append(self.db.put(BytesIO(b"content"), meta=meta))
+        a, b, c = metas
+        metadb.reparent("old", "new")
+        self.assertEqual(metadb.get_for_parent("old"), [])
+        self.assertEqual(
+            [m.id for m in metadb.get_for_parent("new")],
+            [m.id for m in metas],
+        )
+
 
 @only_run_with_partitioned_database
 class TestPartitionedMetaDB(TestMetaDB):
