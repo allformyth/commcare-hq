@@ -16,6 +16,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('sql_accessors', '0013_merge'),
+        ('form_processor', '0054_ledgertransaction'),
     ]
 
     operations = [

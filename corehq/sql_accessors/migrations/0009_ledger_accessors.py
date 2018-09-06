@@ -13,6 +13,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('sql_accessors', '0008_get_case_by_external_id'),
+        ('form_processor', '0039_auto_20151130_1748'),
     ]
 
     operations = [

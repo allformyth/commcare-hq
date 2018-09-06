@@ -20,6 +20,7 @@ migrator = RawSQLMigration(('corehq', 'sql_accessors', 'sql_templates'), {
 class Migration(migrations.Migration):
 
     dependencies = [
+        ('form_processor', '0026_caseforms_to_casetransaction'),
     ]
 
     operations = [
