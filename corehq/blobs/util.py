@@ -5,6 +5,7 @@ import re
 from base64 import urlsafe_b64encode
 from datetime import datetime, timedelta
 
+from botocore.handlers import calculate_md5
 from jsonfield import JSONField
 
 from corehq.blobs.exceptions import BadName
@@ -142,3 +143,14 @@ def set_blob_expire_object(bucket, identifier, length, timeout):
 
 def _utcnow():
     return datetime.utcnow()
+
+
+def get_content_md5(content):
+    """Get Content-MD5 value
+
+    :param content: A file-like object or bytes or bytearray.
+    :returns: RFC-1864-compliant Content-MD5 header value.
+    """
+    params = {"body": content, "headers": {}}
+    calculate_md5(params)
+    return params["headers"]["Content-MD5"]
